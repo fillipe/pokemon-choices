@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torneio Pokémon</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/pokeapi-js-wrapper/dist/index.min.js"></script>
+    <script src="tournament.js" type="module" defer></script>
+    <script src="helpers.js" type="module" defer></script>
+    <script src="types.js" type="module" defer></script>
+    <script src="utils.js" type="module" defer></script>
+    <script src="ui.js" type="module" defer></script>
+    <script src="api.js" type="module" defer></script>
+    
+    
+</head>
+<body>
+    <h1>Torneio Pokémon</h1>
+    <div class="type-buttons">
+        <!-- Botões dos tipos de Pokémon serão gerados aqui -->
+    </div>
+
+    <div class="arena">
+        <h2 id="type-title">Torneio: </h2>
+        <div class="pokemon-choice">
+            <div id="pokemon-1" class="evolution-line">
+                <h3 id="pokemon-1-name">Pokemon 1</h3>
+                <div id="pokemon-1-evolutions"></div>
+                <button id="choose-1">Escolher</button>
+            </div>
+            <div id="pokemon-2" class="evolution-line">
+                <h3 id="pokemon-2-name">Pokemon 2</h3>
+                <div id="pokemon-2-evolutions"></div>
+                <button id="choose-2">Escolher</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="results">
+        <h2>Resultados:</h2>
+        <div id="results-container"></div>
+    </div>
+</body>
+</html>
