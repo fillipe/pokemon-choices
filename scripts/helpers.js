@@ -105,12 +105,35 @@ export async function getEvolutionLine(speciesUrl) {
  */
 async function getPokemonImage(name) {
     try {
+        console.log(`Buscando imagem para: ${name}`);
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
-        if (!response.ok) return "";
+        
+        if (!response.ok) {
+            console.warn(`Falha ao buscar dados para: ${name}. Status: ${response.status}`);
+            return "path/to/placeholder-image.png"; // Caminho de fallback.
+        }
+
         const data = await response.json();
-        return data.sprites.front_default || "";
-    } catch {
-        return "";
+        const sprites = data.sprites;
+
+        // Prioridade de sprites a serem usados
+        const imageUrl =
+            sprites.other?.["official-artwork"]?.front_default || // Arte oficial
+            sprites.other?.home?.front_default || // Imagem "home"
+            sprites.front_default || // Sprite padrão frontal
+            sprites.other?.showdown?.front_default || // Versão do showdown
+            sprites.back_default || // Sprite traseiro
+            "path/to/placeholder-image.png"; // Fallback se nenhum sprite existir
+
+        if (!imageUrl) {
+            console.warn(`Nenhuma imagem encontrada para ${name}`);
+        }
+
+        console.log(`Imagem encontrada para ${name}: ${imageUrl}`);
+        return imageUrl;
+    } catch (error) {
+        console.error(`Erro ao buscar imagem para ${name}:`, error);
+        return "path/to/placeholder-image.png"; // Caminho de fallback.
     }
 }
 
