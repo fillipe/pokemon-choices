@@ -53,32 +53,45 @@ async function fetchPokemonDetails(url) {
 }
 
 /**
- * Obtém a linha evolutiva de um Pokémon.
+ * Obtém a linha evolutiva completa de um Pokémon.
  * @param {string} speciesUrl - URL da espécie do Pokémon.
  * @returns {Promise<Array>} - Linha evolutiva do Pokémon.
  */
 export async function getEvolutionLine(speciesUrl) {
     try {
+        // Busca os dados da espécie
         const speciesResponse = await fetch(speciesUrl);
         const speciesData = await speciesResponse.json();
 
         if (!speciesData.evolution_chain) return [];
 
+        // Busca os dados da cadeia evolutiva
         const evolutionResponse = await fetch(speciesData.evolution_chain.url);
         const evolutionData = await evolutionResponse.json();
 
-        const evolutionLine = [];
-        let currentChain = evolutionData.chain;
+        // Função recursiva para processar a cadeia evolutiva
+        const extractEvolutions = async (chain) => {
+            const evolutions = [];
+            const currentPokemon = {
+                name: chain.species.name,
+                imageUrl: await getPokemonImage(chain.species.name),
+            };
 
-        while (currentChain) {
-            evolutionLine.push({
-                name: currentChain.species.name,
-                imageUrl: await getPokemonImage(currentChain.species.name),
-            });
-            currentChain = currentChain.evolves_to[0];
-        }
+            evolutions.push(currentPokemon);
 
-        return evolutionLine;
+            // Processa múltiplas evoluções, se existirem
+            if (chain.evolves_to.length > 0) {
+                for (const evolution of chain.evolves_to) {
+                    const childEvolutions = await extractEvolutions(evolution);
+                    evolutions.push(...childEvolutions);
+                }
+            }
+
+            return evolutions;
+        };
+
+        // Extrai a linha evolutiva completa
+        return await extractEvolutions(evolutionData.chain);
     } catch (error) {
         console.error("Erro ao buscar linha evolutiva:", error);
         return [];
