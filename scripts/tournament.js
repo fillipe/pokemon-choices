@@ -29,9 +29,11 @@ async function startTournament(type) {
     currentType = type;
     elements.typeTitle.textContent = `Torneio: ${type}`;
     chosenPokemons = [];
-    elements.resultsContainer.innerHTML = "";
 
-    // Carrega os Pokémon do tipo especificado, se ainda não estiverem armazenados.
+    // Não limpa o corpo da tabela aqui
+    const tableBody = elements.resultsContainer.querySelector("tbody");
+
+    // Carrega os Pokémon do tipo especificado, se ainda não estiverem armazenados
     if (!pokemonByType[type]) {
         const pokemonDetails = await fetchPokemonByType(type);
         pokemonByType[type] = pokemonDetails.filter(Boolean);
@@ -41,7 +43,8 @@ async function startTournament(type) {
     currentPokemons = [...pokemonByType[type]];
 
     if (currentPokemons.length === 0) {
-        elements.resultsContainer.innerHTML = `<p>Nenhum Pokémon válido encontrado para o tipo ${type}.</p>`;
+        tableBody.innerHTML += `
+            <tr><td colspan="4">Nenhum Pokémon válido encontrado para o tipo ${type}.</td></tr>`;
         elements.arena.style.display = "none";
         return;
     }
@@ -93,7 +96,7 @@ function choosePokemon(winner, loser) {
 }
 
 /**
- * Mostra os resultados do torneio.
+ * Mostra os resultados do torneio em uma tabela organizada.
  */
 function showResults() {
     const top3 = Object.entries(scoreByPokemon)
@@ -104,24 +107,34 @@ function showResults() {
 
     resultsByType[currentType] = top3;
 
-    elements.resultsContainer.innerHTML = `<h3>Top 3 Pokémon do tipo ${currentType}:</h3>`;
-    top3.forEach((pokemon, index) => {
-        elements.resultsContainer.innerHTML += `
-            <div class="top3-item">
-                <h4>${index + 1}º Lugar</h4>
-                <div class="evolution-line">
-                    ${renderFullEvolutionLine(pokemon.evolutionLine)}
-                </div>
-            </div>
-        `;
-    });
+    const tableBody = elements.resultsContainer.querySelector("tbody");
 
-    const restartButton = document.createElement("button");
-    restartButton.textContent = `Reiniciar torneio para o tipo ${currentType}`;
-    restartButton.addEventListener("click", resetTournament);
-    elements.resultsContainer.appendChild(restartButton);
+    // Verifica se já existe uma linha para o tipo atual
+    let existingRow = tableBody.querySelector(`[data-type="${currentType}"]`);
+
+    if (existingRow) {
+        // Atualiza a linha existente
+        existingRow.innerHTML = `
+            <td>${currentType}</td>
+            <td><img src="${top3[0]?.imageUrl || ''}" alt="${top3[0]?.name || ''}" width="32"></td>
+            <td><img src="${top3[1]?.imageUrl || ''}" alt="${top3[1]?.name || ''}" width="32"></td>
+            <td><img src="${top3[2]?.imageUrl || ''}" alt="${top3[2]?.name || ''}" width="32"></td>
+        `;
+    } else {
+        // Adiciona uma nova linha para o tipo atual
+        const newRow = document.createElement("tr");
+        newRow.setAttribute("data-type", currentType); // Define um atributo para identificar o tipo
+        newRow.innerHTML = `
+            <td>${currentType}</td>
+            <td><img src="${top3[0]?.imageUrl || ''}" alt="${top3[0]?.name || ''}" width="32"></td>
+            <td><img src="${top3[1]?.imageUrl || ''}" alt="${top3[1]?.name || ''}" width="32"></td>
+            <td><img src="${top3[2]?.imageUrl || ''}" alt="${top3[2]?.name || ''}" width="32"></td>
+        `;
+        tableBody.appendChild(newRow);
+    }
 
     elements.arena.style.display = "none";
 }
+
 
 export { startTournament };
