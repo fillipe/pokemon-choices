@@ -35,8 +35,8 @@ async function fetchPokemonDetails(url) {
         const data = await response.json();
 
         // Exclui variantes específicas (e.g., Alola, Galar, etc.)
-        if (/-(alola|galar|paldea|mega|gmax)$/i.test(data.name)) {
-            return null;
+        if (/(alola|galar|paldea|mega|gmax)/i.test(data.name)) {
+            return null; // Exclui Pokémon que contenham qualquer uma dessas palavras no nome
         }
 
         return {
