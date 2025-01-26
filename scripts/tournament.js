@@ -116,9 +116,14 @@ function showResults() {
         // Atualiza a linha existente
         existingRow.innerHTML = `
             <td>${currentType}</td>
-            <td><img src="${top3[0]?.imageUrl || ''}" alt="${top3[0]?.name || ''}" width="32"></td>
-            <td><img src="${top3[1]?.imageUrl || ''}" alt="${top3[1]?.name || ''}" width="32"></td>
-            <td><img src="${top3[2]?.imageUrl || ''}" alt="${top3[2]?.name || ''}" width="32"></td>
+            ${top3.map(pokemon => `
+                <td class="pokemon-cell">
+                    <div class="pokemon-info">
+                        <img src="${pokemon?.imageUrl || ''}" alt="${pokemon?.name || ''}" width="32">
+                        <span>${pokemon?.name || 'N/A'}</span>
+                    </div>
+                </td>
+            `).join('')}
         `;
     } else {
         // Adiciona uma nova linha para o tipo atual
@@ -126,9 +131,14 @@ function showResults() {
         newRow.setAttribute("data-type", currentType); // Define um atributo para identificar o tipo
         newRow.innerHTML = `
             <td>${currentType}</td>
-            <td><img src="${top3[0]?.imageUrl || ''}" alt="${top3[0]?.name || ''}" width="32"></td>
-            <td><img src="${top3[1]?.imageUrl || ''}" alt="${top3[1]?.name || ''}" width="32"></td>
-            <td><img src="${top3[2]?.imageUrl || ''}" alt="${top3[2]?.name || ''}" width="32"></td>
+            ${top3.map(pokemon => `
+                <td class="pokemon-cell">
+                    <div class="pokemon-info">
+                        <img src="${pokemon?.imageUrl || ''}" alt="${pokemon?.name || ''}" width="32">
+                        <span>${pokemon?.name || 'N/A'}</span>
+                    </div>
+                </td>
+            `).join('')}
         `;
         tableBody.appendChild(newRow);
     }

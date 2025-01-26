@@ -108,7 +108,7 @@ button:disabled {
     margin-top: 20px;
 }
 
-.results th, .results td {
+.results th {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
@@ -117,4 +117,39 @@ button:disabled {
 .results img {
     display: block;
     margin: 0 auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.pokemon-cell img {
+    width: 32px; /* Tamanho do ícone */
+    height: 32px;
+    border-radius: 50%; /* Forma circular para as imagens */
+}
+
+.pokemon-info {
+    display: flex;
+    align-items: center;
+    gap: 0px; /* Sem espaçamento entre ícone e nome */
+    justify-content: center; /* Centraliza na célula */
+}
+
+.results td {
+    vertical-align: middle; /* Garante alinhamento vertical correto na célula */
+    text-align: center; /* Centraliza o conteúdo horizontalmente */
+}
+
+img {
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 50%;
 }
