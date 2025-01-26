@@ -35,7 +35,7 @@ async function fetchPokemonDetails(url) {
         const data = await response.json();
 
         // Exclui variantes específicas (e.g., Alola, Galar, etc.)
-        if (/(alola|galar|paldea|mega|gmax)/i.test(data.name)) {
+        if (/(kanto|johto|hoenn|sinnoh|unova|kalos|hisui|alola|galar|paldea|mega|gmax)/i.test(data.name)) {
             return null; // Exclui Pokémon que contenham qualquer uma dessas palavras no nome
         }
 
@@ -152,13 +152,14 @@ export function getRandomPokemons(pokemons) {
  * Renderiza a linha evolutiva de um Pokémon.
  * @param {Array} evolutionLine - Linha evolutiva do Pokémon.
  * @param {boolean} isBattle - Indica se está em modo de batalha.
+ * @param {string} pokemonName - Nome do Pokémon principal a ser destacado.
  * @returns {string} - HTML da linha evolutiva.
  */
-export function renderFullEvolutionLine(evolutionLine, isBattle = false) {
+export function renderFullEvolutionLine(evolutionLine, isBattle = false, pokemonName = '') {
     return evolutionLine
-        .filter(evo => evo.imageUrl)
+        .filter(evo => evo.imageUrl) // Garante que tenha URL de imagem
         .map(evo => `
-            <div class="evolution-item" style="display: inline-block; text-align: center; margin: 10px;">
+            <div class="evolution-item ${evo.name === pokemonName ? 'highlight' : ''}" style="display: inline-block; text-align: center; margin: 10px;">
                 <img src="${evo.imageUrl}" alt="${evo.name}" width="${isBattle ? 100 : 150}">
                 <p>${evo.name}</p>
             </div>

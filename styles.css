@@ -153,3 +153,15 @@ img {
     vertical-align: middle;
     border-radius: 50%;
 }
+
+.evolution-item.highlight {
+    border: 3px solid #ffcc00; /* Borda de destaque */
+    background-color: #fff7d1; /* Cor de fundo diferenciada */
+    border-radius: 8px; /* Bordas arredondadas */
+    padding: 5px; /* Espaço interno */
+    transition: transform 0.3s ease, background-color 0.3s ease; /* Animação suave */
+}
+
+.evolution-item.highlight:hover {
+    transform: scale(1.1); /* Leve aumento ao passar o mouse */
+}

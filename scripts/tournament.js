@@ -54,16 +54,6 @@ async function startTournament(type) {
 }
 
 /**
- * Reinicia o torneio para o tipo atual.
- */
-function resetTournament() {
-    currentPokemons = [...pokemonByType[currentType]];
-    chosenPokemons = [];
-    elements.resultsContainer.innerHTML = "";
-    showNextBattle();
-}
-
-/**
  * Exibe a próxima batalha entre dois Pokémon.
  */
 function showNextBattle() {
@@ -75,9 +65,9 @@ function showNextBattle() {
     const [pokemon1, pokemon2] = getRandomPokemons(currentPokemons);
 
     elements.pokemon1Name.textContent = pokemon1.name;
-    elements.pokemon1Evolution.innerHTML = renderFullEvolutionLine(pokemon1.evolutionLine, true);
+    elements.pokemon1Evolution.innerHTML = renderFullEvolutionLine(pokemon1.evolutionLine, true, pokemon1.name);
     elements.pokemon2Name.textContent = pokemon2.name;
-    elements.pokemon2Evolution.innerHTML = renderFullEvolutionLine(pokemon2.evolutionLine, true);
+    elements.pokemon2Evolution.innerHTML = renderFullEvolutionLine(pokemon2.evolutionLine, true, pokemon2.name);
 
     elements.choose1Button.onclick = () => choosePokemon(pokemon1, pokemon2);
     elements.choose2Button.onclick = () => choosePokemon(pokemon2, pokemon1);
